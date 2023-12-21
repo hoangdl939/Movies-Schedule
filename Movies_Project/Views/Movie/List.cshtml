@@ -1,0 +1,105 @@
+﻿@model IEnumerable<Movies_Project.Models.Movie>
+
+@{
+    ViewData["Title"] = "List";
+    Layout = "~/Pages/Shared/_Layout.cshtml";
+}
+
+@{
+    
+    
+}
+<style>
+   
+    .movie-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+        
+    }
+
+    .movie-card {
+        background-color:darksalmon;
+        width: calc(25% - 20px); 
+        padding: 15px;
+        border: 1px solid #ccc;
+        cursor: pointer;
+    }
+
+    .search-container {
+        display: flex;
+        justify-content: center; 
+        margin-bottom: 20px; 
+    }
+
+    #searchBox {
+  
+        width: 300px; 
+        font-size: 15px;
+        
+    }
+
+ 
+</style>
+
+<h1 style="text-align:center">List</h1>
+
+<!-- Search box -->
+<div class="search-container">
+    <input type="text" id="searchBox" class="search-box-class" placeholder="Enter title to search" oninput="searchMovies()">
+</div>
+
+
+
+
+<div class="movie-container">
+
+    @foreach (var movie in Model)
+    {
+        <div class="movie-card" onclick="redirectToMovieDetails(@movie.Id)">
+            <h3> Movie Id: @movie.Id</h3>
+            <p>Movie Title: @movie.Title</p>
+            <p>Movie Year: @movie.Year</p>
+            <p>Movie Director: @movie.Director.Name</p>
+            <p>Movie Description: @movie.Description</p>
+            
+        </div>
+    }
+</div>
+
+
+<script>
+    
+    function searchMovies() {
+        var input, filter, movieContainer, movies, title, i, txtValue;
+
+        //get input obj
+        input = document.getElementById('searchBox');
+
+        //get the input value
+        filter = input.value.toUpperCase();
+
+
+        movieContainer = document.getElementsByClassName('movie-container')[0];
+
+
+        movies = movieContainer.getElementsByClassName('movie-card');
+
+        for (i = 0; i < movies.length; i++) {
+            title = movies[i].getElementsByTagName('p')[0];
+            txtValue = title.textContent || title.innerText;
+            if (txtValue.toUpperCase().indexOf(filter) > -1) {
+                movies[i].style.display = '';
+            } else {
+                movies[i].style.display = 'none';
+            }
+        }
+    }
+
+
+    function redirectToMovieDetails(movieId) {
+        window.location.href = '/Movie/Detail/' + movieId;
+    }
+</script>
+
+
